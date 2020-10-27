@@ -6,6 +6,7 @@ import com.priago.monocleapi.api.converters.user.UserConverter;
 import com.priago.monocleapi.api.resources.entities.media.impl.AuthorResource;
 import com.priago.monocleapi.core.models.entities.media.impl.Author;
 import com.priago.monocleapi.core.services.entities.media.impl.AuthorService;
+import com.priago.monocleapi.core.services.nonentities.MonocleUidService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,9 @@ public class AuthorConverter implements MonocleConverter<Author, AuthorResource>
     @Resource(name = "authorService")
     private AuthorService authorService;
 
+    @Resource(name = "monocleUidService")
+    private MonocleUidService<Author, AuthorResource> monocleUidService;
+
     @Resource(name = "sourceConverter")
     private SourceConverter sourceConverter;
 
@@ -40,6 +44,7 @@ public class AuthorConverter implements MonocleConverter<Author, AuthorResource>
         AuthorResource resource = new AuthorResource();
 
         if (entity != null) {
+            resource.setUid(this.monocleUidService.computeUid(entity));
             resource.setSource(this.sourceConverter.convert(entity.getSource()));
             resource.setCode(entity.getCode());
             resource.setName(entity.getName());

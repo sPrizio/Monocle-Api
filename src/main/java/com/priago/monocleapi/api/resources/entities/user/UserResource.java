@@ -23,6 +23,7 @@ import java.util.Set;
 public class UserResource implements MonocleResource, Comparable<UserResource> {
 
     @Getter
+    @Setter
     private String uid;
 
     @Getter

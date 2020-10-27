@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 public class ArticleLikeResource implements MonocleLikeResource {
 
     @Getter
+    @Setter
     private String uid;
 
     @Getter

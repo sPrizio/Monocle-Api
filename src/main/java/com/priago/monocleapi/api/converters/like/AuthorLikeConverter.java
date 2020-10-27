@@ -6,6 +6,7 @@ import com.priago.monocleapi.api.converters.user.UserConverter;
 import com.priago.monocleapi.api.resources.entities.like.impl.AuthorLikeResource;
 import com.priago.monocleapi.core.enums.MonocleLikeCardinality;
 import com.priago.monocleapi.core.models.entities.like.impl.AuthorLike;
+import com.priago.monocleapi.core.services.nonentities.MonocleUidService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,9 @@ public class AuthorLikeConverter implements MonocleConverter<AuthorLike, AuthorL
     @Resource(name = "authorConverter")
     private AuthorConverter authorConverter;
 
+    @Resource(name = "monocleUidService")
+    private MonocleUidService<AuthorLike, AuthorLikeResource> monocleUidService;
+
     @Resource(name = "userConverter")
     private UserConverter userConverter;
 
@@ -37,6 +41,7 @@ public class AuthorLikeConverter implements MonocleConverter<AuthorLike, AuthorL
         AuthorLikeResource resource = new AuthorLikeResource();
 
         if (entity != null) {
+            resource.setUid(this.monocleUidService.computeUid(entity));
             resource.setCardinality(MonocleLikeCardinality.valueOf(entity.getCardinality().toUpperCase()));
             resource.setDateTime(entity.getDateTime());
             resource.setResource(this.authorConverter.convert(entity.getEntity()));

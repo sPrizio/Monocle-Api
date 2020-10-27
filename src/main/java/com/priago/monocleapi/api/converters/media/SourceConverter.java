@@ -9,6 +9,7 @@ import com.priago.monocleapi.core.enums.MonocleCountry;
 import com.priago.monocleapi.core.enums.MonocleLanguage;
 import com.priago.monocleapi.core.models.entities.media.impl.Source;
 import com.priago.monocleapi.core.services.entities.media.impl.SourceService;
+import com.priago.monocleapi.core.services.nonentities.MonocleUidService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,9 @@ import java.util.stream.Collectors;
 @Component("sourceConverter")
 public class SourceConverter implements MonocleConverter<Source, SourceResource> {
 
+    @Resource(name = "monocleUidService")
+    private MonocleUidService<Source, SourceResource> monocleUidService;
+
     @Resource(name = "sourceService")
     private SourceService sourceService;
 
@@ -41,6 +45,7 @@ public class SourceConverter implements MonocleConverter<Source, SourceResource>
         SourceResource resource = new SourceResource();
 
         if (entity != null) {
+            resource.setUid(this.monocleUidService.computeUid(entity));
             resource.setId(entity.getId());
             resource.setName(entity.getName());
             resource.setDescription(entity.getDescription());

@@ -21,6 +21,7 @@ import java.util.Set;
 public class AuthorResource implements MonocleMediaResource, Comparable<AuthorResource> {
 
     @Getter
+    @Setter
     private String uid;
 
     @Getter

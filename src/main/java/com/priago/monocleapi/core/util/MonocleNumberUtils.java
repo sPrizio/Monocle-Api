@@ -62,11 +62,15 @@ public class MonocleNumberUtils {
      * @return will return null if the string cannot be parsed
      */
     public static Long safeParseLong(String string) {
-        try {
-            return Long.parseLong(string);
-        } catch (Exception e) {
-            LOGGER.error("Long could not be parsed from the given string {}", string);
-            return null;
+        if (StringUtils.isNotEmpty(string)) {
+            try {
+                return Long.parseLong(string);
+            } catch (Exception e) {
+                LOGGER.error("Long could not be parsed from the given string {}", string);
+                return -1L;
+            }
         }
+
+        return -1L;
     }
 }

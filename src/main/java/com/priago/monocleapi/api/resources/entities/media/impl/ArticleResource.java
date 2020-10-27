@@ -20,6 +20,7 @@ import java.util.Set;
 public class ArticleResource implements MonocleMediaResource, Comparable<ArticleResource> {
 
     @Getter
+    @Setter
     private String uid;
 
     @Getter

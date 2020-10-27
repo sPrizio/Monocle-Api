@@ -9,9 +9,29 @@ import com.priago.monocleapi.core.models.entities.MonocleEntity;
  * @author Stephen Prizio <a href="http://www.saprizio.com">www.saprizio.com</a>
  * @version 1.0
  */
-public interface MonocleUidService {
+public interface MonocleUidService<E extends MonocleEntity, R extends  MonocleResource> {
 
-    String computeUid(MonocleEntity entity);
+    /**
+     * Computes a uid for a {@link R}
+     *
+     * @param entity {@link E}
+     * @return a unique identifier for the {@link R}
+     */
+    String computeUid(E entity);
 
-    Long computePk(MonocleResource resource);
+    /**
+     * Computes the pk for a {@link E} from the {@link R}
+     *
+     * @param resource {@link R}
+     * @return the pk for the {@link E}
+     */
+    Long computePk(R resource);
+
+    /**
+     * Computes the class and pk for a {@link E} from the {@link R}
+     *
+     * @param resource {@link R}
+     * @return the pk for the {@link E}
+     */
+    String compute(R resource);
 }

@@ -10,6 +10,7 @@ import com.priago.monocleapi.core.models.entities.user.User;
 import com.priago.monocleapi.core.services.entities.media.impl.ArticleService;
 import com.priago.monocleapi.core.services.entities.media.impl.AuthorService;
 import com.priago.monocleapi.core.services.entities.media.impl.SourceService;
+import com.priago.monocleapi.core.services.nonentities.MonocleUidService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -41,6 +42,9 @@ public class UserConverter implements MonocleConverter<User, UserResource> {
     @Resource(name = "authorService")
     private AuthorService authorService;
 
+    @Resource(name = "monocleUidService")
+    private MonocleUidService<User, UserResource> monocleUidService;
+
     @Resource(name = "sourceConverter")
     private SourceConverter sourceConverter;
 
@@ -60,6 +64,7 @@ public class UserConverter implements MonocleConverter<User, UserResource> {
         UserResource resource = new UserResource();
 
         if (entity != null) {
+            resource.setUid(this.monocleUidService.computeUid(entity));
             resource.setUsername(entity.getUsername());
             resource.setFirstName(StringUtils.EMPTY);
             resource.setLastName(StringUtils.EMPTY);
@@ -95,6 +100,7 @@ public class UserConverter implements MonocleConverter<User, UserResource> {
         UserResource resource = new UserResource();
 
         if (entity != null) {
+            resource.setUid(this.monocleUidService.computeUid(entity));
             resource.setUsername(entity.getUsername());
             resource.setFirstName(entity.getFirstName());
             resource.setLastName(entity.getLastName());

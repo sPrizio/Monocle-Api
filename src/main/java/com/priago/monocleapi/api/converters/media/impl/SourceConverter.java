@@ -92,14 +92,16 @@ public class SourceConverter implements MonocleMediaConverter<Source, SourceReso
      * @param entity {@link Source}
      */
     private void convertCore(final SourceResource resource, final Source entity) {
-        resource.setUid(this.monocleUidService.computeUid(entity));
-        resource.setId(entity.getId());
-        resource.setName(entity.getName());
-        resource.setDescription(entity.getDescription());
-        resource.setUrl(entity.getUrl());
-        resource.setCategory(EnumUtils.isValidEnumIgnoreCase(MonocleCategory.class, entity.getCategory()) ? MonocleCategory.valueOf(entity.getCategory().toUpperCase()) : MonocleCategory.NOT_APPLICABLE);
-        resource.setLanguage(EnumUtils.isValidEnumIgnoreCase(MonocleLanguage.class, entity.getLanguage()) ? MonocleLanguage.valueOf(entity.getLanguage().toUpperCase()) : MonocleLanguage.NOT_APPLICABLE);
-        resource.setCountry(EnumUtils.isValidEnumIgnoreCase(MonocleCountry.class, entity.getCountry()) ? MonocleCountry.valueOf(entity.getCountry().toUpperCase()) : MonocleCountry.NOT_APPLICABLE);
+        if (entity != null) {
+            resource.setUid(this.monocleUidService.computeUid(entity));
+            resource.setId(entity.getId());
+            resource.setName(entity.getName());
+            resource.setDescription(entity.getDescription());
+            resource.setUrl(entity.getUrl());
+            resource.setCategory(EnumUtils.isValidEnumIgnoreCase(MonocleCategory.class, entity.getCategory()) ? MonocleCategory.valueOf(entity.getCategory().toUpperCase()) : MonocleCategory.NOT_APPLICABLE);
+            resource.setLanguage(EnumUtils.isValidEnumIgnoreCase(MonocleLanguage.class, entity.getLanguage()) ? MonocleLanguage.valueOf(entity.getLanguage().toUpperCase()) : MonocleLanguage.NOT_APPLICABLE);
+            resource.setCountry(EnumUtils.isValidEnumIgnoreCase(MonocleCountry.class, entity.getCountry()) ? MonocleCountry.valueOf(entity.getCountry().toUpperCase()) : MonocleCountry.NOT_APPLICABLE);
+        }
     }
 
     /**
@@ -110,12 +112,14 @@ public class SourceConverter implements MonocleMediaConverter<Source, SourceReso
      * @param excludeLikedBy true if liked by should not be included
      */
     private void fetchLikes(final SourceResource resource, final Source entity, boolean excludeLikedBy) {
-        resource.setLikes(this.sourceService.getLikes(entity));
-        resource.setDislikes(this.sourceService.getDislikes(entity));
+        if (entity != null) {
+            resource.setLikes(this.sourceService.getLikes(entity));
+            resource.setDislikes(this.sourceService.getDislikes(entity));
 
-        if (!excludeLikedBy) {
-            resource.setLikedBy(Sets.newLinkedHashSet(this.userConverter.convertAllBasic(this.sourceService.likedBy(entity))));
-            resource.setDislikedBy(Sets.newLinkedHashSet(this.userConverter.convertAllBasic(this.sourceService.dislikedBy(entity))));
+            if (!excludeLikedBy) {
+                resource.setLikedBy(Sets.newLinkedHashSet(this.userConverter.convertAllBasic(this.sourceService.likedBy(entity))));
+                resource.setDislikedBy(Sets.newLinkedHashSet(this.userConverter.convertAllBasic(this.sourceService.dislikedBy(entity))));
+            }
         }
     }
 }

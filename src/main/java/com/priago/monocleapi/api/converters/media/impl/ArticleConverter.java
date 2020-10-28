@@ -94,15 +94,17 @@ public class ArticleConverter implements MonocleMediaConverter<Article, ArticleR
      * @param entity {@link Article}
      */
     private void convertCore(final ArticleResource resource, final Article entity) {
-        resource.setUid(this.monocleUidService.computeUid(entity));
-        resource.setSource(this.sourceConverter.convert(entity.getSource(), false, true));
-        resource.setAuthor(this.authorConverter.convert(entity.getAuthor(), false, true));
-        resource.setTitle(entity.getTitle());
-        resource.setDescription(entity.getDescription());
-        resource.setUrl(entity.getUrl());
-        resource.setUrlToImage(entity.getUrlToImage());
-        resource.setPublishedAt(entity.getPublishedAt());
-        resource.setContent(entity.getContent());
+        if (entity != null) {
+            resource.setUid(this.monocleUidService.computeUid(entity));
+            resource.setSource(this.sourceConverter.convert(entity.getSource(), false, true));
+            resource.setAuthor(this.authorConverter.convert(entity.getAuthor(), false, true));
+            resource.setTitle(entity.getTitle());
+            resource.setDescription(entity.getDescription());
+            resource.setUrl(entity.getUrl());
+            resource.setUrlToImage(entity.getUrlToImage());
+            resource.setPublishedAt(entity.getPublishedAt());
+            resource.setContent(entity.getContent());
+        }
     }
 
     /**
@@ -113,12 +115,14 @@ public class ArticleConverter implements MonocleMediaConverter<Article, ArticleR
      * @param excludeLikedBy true if liked by should not be included
      */
     private void fetchLikes(final ArticleResource resource, final Article entity, boolean excludeLikedBy) {
-        resource.setLikes(this.articleService.getLikes(entity));
-        resource.setDislikes(this.articleService.getDislikes(entity));
+        if (entity != null) {
+            resource.setLikes(this.articleService.getLikes(entity));
+            resource.setDislikes(this.articleService.getDislikes(entity));
 
-        if (!excludeLikedBy) {
-            resource.setLikedBy(Sets.newLinkedHashSet(this.userConverter.convertAllBasic(this.articleService.likedBy(entity))));
-            resource.setDislikedBy(Sets.newLinkedHashSet(this.userConverter.convertAllBasic(this.articleService.dislikedBy(entity))));
+            if (!excludeLikedBy) {
+                resource.setLikedBy(Sets.newLinkedHashSet(this.userConverter.convertAllBasic(this.articleService.likedBy(entity))));
+                resource.setDislikedBy(Sets.newLinkedHashSet(this.userConverter.convertAllBasic(this.articleService.dislikedBy(entity))));
+            }
         }
     }
 }

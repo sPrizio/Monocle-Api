@@ -91,10 +91,12 @@ public class AuthorConverter implements MonocleMediaConverter<Author, AuthorReso
      * @param entity {@link Author}
      */
     private void convertCore(final AuthorResource resource, final Author entity) {
-        resource.setUid(this.monocleUidService.computeUid(entity));
-        resource.setSource(this.sourceConverter.convert(entity.getSource(), false, true));
-        resource.setCode(entity.getCode());
-        resource.setName(entity.getName());
+        if (entity != null) {
+            resource.setUid(this.monocleUidService.computeUid(entity));
+            resource.setSource(this.sourceConverter.convert(entity.getSource(), false, true));
+            resource.setCode(entity.getCode());
+            resource.setName(entity.getName());
+        }
     }
 
     /**
@@ -105,12 +107,14 @@ public class AuthorConverter implements MonocleMediaConverter<Author, AuthorReso
      * @param excludeLikedBy true if liked by should not be included
      */
     private void fetchLikes(final AuthorResource resource, final Author entity, boolean excludeLikedBy) {
-        resource.setLikes(this.authorService.getLikes(entity));
-        resource.setDislikes(this.authorService.getDislikes(entity));
+        if (entity != null) {
+            resource.setLikes(this.authorService.getLikes(entity));
+            resource.setDislikes(this.authorService.getDislikes(entity));
 
-        if (!excludeLikedBy) {
-            resource.setLikedBy(Sets.newLinkedHashSet(this.userConverter.convertAllBasic(this.authorService.likedBy(entity))));
-            resource.setDislikedBy(Sets.newLinkedHashSet(this.userConverter.convertAllBasic(this.authorService.dislikedBy(entity))));
+            if (!excludeLikedBy) {
+                resource.setLikedBy(Sets.newLinkedHashSet(this.userConverter.convertAllBasic(this.authorService.likedBy(entity))));
+                resource.setDislikedBy(Sets.newLinkedHashSet(this.userConverter.convertAllBasic(this.authorService.dislikedBy(entity))));
+            }
         }
     }
 }

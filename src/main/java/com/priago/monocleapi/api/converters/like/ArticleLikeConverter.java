@@ -1,7 +1,7 @@
 package com.priago.monocleapi.api.converters.like;
 
 import com.priago.monocleapi.api.converters.MonocleConverter;
-import com.priago.monocleapi.api.converters.media.ArticleConverter;
+import com.priago.monocleapi.api.converters.media.impl.ArticleConverter;
 import com.priago.monocleapi.api.converters.user.UserConverter;
 import com.priago.monocleapi.api.resources.entities.like.impl.ArticleLikeResource;
 import com.priago.monocleapi.core.enums.MonocleLikeCardinality;

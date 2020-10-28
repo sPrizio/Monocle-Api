@@ -2,9 +2,9 @@ package com.priago.monocleapi.api.converters.user;
 
 import com.google.common.collect.Sets;
 import com.priago.monocleapi.api.converters.MonocleConverter;
-import com.priago.monocleapi.api.converters.media.ArticleConverter;
-import com.priago.monocleapi.api.converters.media.AuthorConverter;
-import com.priago.monocleapi.api.converters.media.SourceConverter;
+import com.priago.monocleapi.api.converters.media.impl.ArticleConverter;
+import com.priago.monocleapi.api.converters.media.impl.AuthorConverter;
+import com.priago.monocleapi.api.converters.media.impl.SourceConverter;
 import com.priago.monocleapi.api.resources.entities.user.UserResource;
 import com.priago.monocleapi.core.models.entities.user.User;
 import com.priago.monocleapi.core.services.entities.media.impl.ArticleService;

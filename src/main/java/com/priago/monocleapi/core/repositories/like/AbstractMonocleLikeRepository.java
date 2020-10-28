@@ -39,7 +39,7 @@ public abstract class AbstractMonocleLikeRepository<M extends MonocleMedia> {
     protected int getCount(String queryString, M media, MonocleLikeCardinality cardinality) {
         Query query = this.entityManager.createNativeQuery(queryString);
         query.setParameter(MonocleCoreConstants.Database.ENTITY, media.getPk());
-        query.setParameter(MonocleCoreConstants.Database.CARDINALITY, cardinality);
+        query.setParameter(MonocleCoreConstants.Database.CARDINALITY, cardinality.getCode());
         return ((Number) query.getSingleResult()).intValue();
     }
 
@@ -70,7 +70,7 @@ public abstract class AbstractMonocleLikeRepository<M extends MonocleMedia> {
     protected Set<M> getMedia(String queryString, User user, MonocleLikeCardinality cardinality, Class<?> clazz) {
         Query query = this.entityManager.createNativeQuery(queryString, clazz);
         query.setParameter(MonocleCoreConstants.Database.ENTITY, user.getPk());
-        query.setParameter(MonocleCoreConstants.Database.CARDINALITY, cardinality);
+        query.setParameter(MonocleCoreConstants.Database.CARDINALITY, cardinality.getCode());
         return new LinkedHashSet<>((List <M>) query.getResultList());
     }
 }

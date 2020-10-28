@@ -1,6 +1,6 @@
 package com.priago.monocleapi.api.resolvers.media;
 
-import com.priago.monocleapi.api.converters.media.ArticleConverter;
+import com.priago.monocleapi.api.converters.media.impl.ArticleConverter;
 import com.priago.monocleapi.api.resolvers.MonocleResolver;
 import com.priago.monocleapi.api.resources.entities.media.impl.ArticleResource;
 import com.priago.monocleapi.client.models.data.impl.ArticleResponseData;

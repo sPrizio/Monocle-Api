@@ -1,7 +1,7 @@
 package com.priago.monocleapi.api.facades.media.impl;
 
 import com.google.common.collect.Lists;
-import com.priago.monocleapi.api.converters.media.ArticleConverter;
+import com.priago.monocleapi.api.converters.media.impl.ArticleConverter;
 import com.priago.monocleapi.api.facades.media.AbstractMonocleMediaFacade;
 import com.priago.monocleapi.api.facades.media.MonocleMediaFacade;
 import com.priago.monocleapi.api.models.data.search.MonoclePageAndSortData;

@@ -1,7 +1,7 @@
 package com.priago.monocleapi.api.facades.media;
 
 import com.google.common.collect.Sets;
-import com.priago.monocleapi.api.converters.MonocleConverter;
+import com.priago.monocleapi.api.converters.media.MonocleMediaConverter;
 import com.priago.monocleapi.api.converters.user.UserConverter;
 import com.priago.monocleapi.api.facades.AbstractMonocleEntityFacade;
 import com.priago.monocleapi.api.resources.entities.media.MonocleMediaResource;
@@ -26,7 +26,7 @@ import java.util.Set;
  * @author Stephen Prizio <a href="http://www.saprizio.com">www.saprizio.com</a>
  * @version 1.0
  */
-public abstract class AbstractMonocleMediaFacade<M extends MonocleMedia, R extends MonocleMediaResource, C extends MonocleConverter<M, R>, S extends MonocleMediaService<M>> extends AbstractMonocleEntityFacade<M, R, C, S> implements MonocleMediaFacade<R> {
+public abstract class AbstractMonocleMediaFacade<M extends MonocleMedia, R extends MonocleMediaResource, C extends MonocleMediaConverter<M, R>, S extends MonocleMediaService<M>> extends AbstractMonocleEntityFacade<M, R, C, S> implements MonocleMediaFacade<R> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMonocleMediaFacade.class);
 
@@ -34,7 +34,7 @@ public abstract class AbstractMonocleMediaFacade<M extends MonocleMedia, R exten
     private C converter;
 
     @Resource(name = "monocleUidService")
-    private MonocleUidService monocleUidService;
+    private MonocleUidService<M, R> monocleUidService;
 
     @Autowired
     private S service;
@@ -47,6 +47,12 @@ public abstract class AbstractMonocleMediaFacade<M extends MonocleMedia, R exten
 
 
     //  METHODS
+
+    @Override
+    public R find(String uid) {
+        Optional<M> entity = this.service.find(-1L);
+        return entity.map(e -> this.converter.convert(e, false, false)).orElse(null);
+    }
 
     @Override
     public Set<UserResource> likedBy(R media) {

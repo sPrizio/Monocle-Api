@@ -1,8 +1,6 @@
 package com.priago.monocleapi.api.facades.media.impl;
 
-import com.priago.monocleapi.api.converters.media.AuthorConverter;
-import com.priago.monocleapi.api.facades.AbstractMonocleEntityFacade;
-import com.priago.monocleapi.api.facades.MonocleEntityFacade;
+import com.priago.monocleapi.api.converters.media.impl.AuthorConverter;
 import com.priago.monocleapi.api.facades.media.AbstractMonocleMediaFacade;
 import com.priago.monocleapi.api.facades.media.MonocleMediaFacade;
 import com.priago.monocleapi.api.resources.entities.media.impl.AuthorResource;

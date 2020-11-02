@@ -53,6 +53,15 @@ public class DefaultMonocleUidService<E extends MonocleEntity, R extends Monocle
     }
 
     @Override
+    public String computeClass(String uid) {
+        if (StringUtils.isEmpty(uid)) {
+            return StringUtils.EMPTY;
+        }
+
+       return computeClassName(uid.split(DELIMITER));
+    }
+
+    @Override
     public String compute(R resource) {
         if (!resource.isPresent()) {
             return StringUtils.EMPTY;
@@ -60,15 +69,7 @@ public class DefaultMonocleUidService<E extends MonocleEntity, R extends Monocle
 
         String[] array = resource.getUid().split(DELIMITER);
         if (array.length > 0) {
-            String[] chars = array[0].split(CHAR_DELIMITER);
-            int[] unmasked = convertToIntArray(chars);
-            byte[] bytes = new byte[unmasked.length];
-
-            for (int i = 0; i < bytes.length; i++) {
-                bytes[i] = (byte) unmasked[i];
-            }
-
-            String clazz = new String(bytes, StandardCharsets.UTF_8);
+            String clazz = computeClassName(array);
             if (array.length > 1) {
                 long pk = Long.parseLong(array[1]) / MULTIPLICAND;
                 return clazz + " " + pk;
@@ -121,5 +122,27 @@ public class DefaultMonocleUidService<E extends MonocleEntity, R extends Monocle
         StringBuilder builder = new StringBuilder();
         Arrays.stream(array).forEach(i -> builder.append(i).append(CHAR_DELIMITER));
         return builder.toString();
+    }
+
+    /**
+     * Computes the class name
+     *
+     * @param array array of strings
+     * @return class name
+     */
+    private String computeClassName(String[] array) {
+        if (array.length > 0) {
+            String[] chars = array[0].split(CHAR_DELIMITER);
+            int[] unmasked = convertToIntArray(chars);
+            byte[] bytes = new byte[unmasked.length];
+
+            for (int i = 0; i < bytes.length; i++) {
+                bytes[i] = (byte) unmasked[i];
+            }
+
+            return new String(bytes, StandardCharsets.UTF_8);
+        }
+
+        return StringUtils.EMPTY;
     }
 }

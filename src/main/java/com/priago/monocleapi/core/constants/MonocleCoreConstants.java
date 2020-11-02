@@ -31,6 +31,16 @@ public class MonocleCoreConstants {
 
     //  FIELDS
 
+    public static class Cache {
+        private Cache() {
+            throw new UnsupportedOperationException(NO_INSTANTIATION);
+        }
+
+        public static final String ARTICLE_KEY = "articles";
+        public static final String AUTHOR_KEY = "authors";
+        public static final String SOURCE_KEY = "sources";
+    }
+
     public static class Client {
 
         private Client() {

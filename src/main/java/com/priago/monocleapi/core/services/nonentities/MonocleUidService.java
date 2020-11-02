@@ -28,6 +28,14 @@ public interface MonocleUidService<E extends MonocleEntity, R extends  MonocleRe
     Long computePk(R resource);
 
     /**
+     * Deconstruct the uid into its class
+     *
+     * @param uid resource's uid
+     * @return class name
+     */
+    String computeClass(String uid);
+
+    /**
      * Computes the class and pk for a {@link E} from the {@link R}
      *
      * @param resource {@link R}

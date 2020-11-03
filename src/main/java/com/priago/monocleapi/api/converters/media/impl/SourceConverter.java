@@ -7,14 +7,17 @@ import com.priago.monocleapi.api.resources.entities.media.impl.SourceResource;
 import com.priago.monocleapi.core.enums.MonocleCategory;
 import com.priago.monocleapi.core.enums.MonocleCountry;
 import com.priago.monocleapi.core.enums.MonocleLanguage;
+import com.priago.monocleapi.core.enums.MonocleLikeCardinality;
 import com.priago.monocleapi.core.models.entities.media.impl.Source;
 import com.priago.monocleapi.core.services.entities.media.impl.SourceService;
+import com.priago.monocleapi.core.services.nonentities.MonocleLikeCacheService;
 import com.priago.monocleapi.core.services.nonentities.MonocleUidService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -27,6 +30,9 @@ import java.util.stream.Collectors;
  */
 @Component("sourceConverter")
 public class SourceConverter implements MonocleMediaConverter<Source, SourceResource> {
+
+    @Resource(name = "monocleLikeCacheService")
+    private MonocleLikeCacheService monocleLikeCacheService;
 
     @Resource(name = "monocleUidService")
     private MonocleUidService<Source, SourceResource> monocleUidService;
@@ -113,8 +119,8 @@ public class SourceConverter implements MonocleMediaConverter<Source, SourceReso
      */
     private void fetchLikes(final SourceResource resource, final Source entity, boolean excludeLikedBy) {
         if (entity != null) {
-            resource.setLikes(this.sourceService.getLikes(entity));
-            resource.setDislikes(this.sourceService.getDislikes(entity));
+            resource.setLikes(BigDecimal.valueOf(this.sourceService.getLikes(entity)).add(BigDecimal.valueOf(this.monocleLikeCacheService.getCount(resource.getUid(), MonocleLikeCardinality.LIKE))).intValue());
+            resource.setDislikes(BigDecimal.valueOf(this.sourceService.getDislikes(entity)).add(BigDecimal.valueOf(this.monocleLikeCacheService.getCount(resource.getUid(), MonocleLikeCardinality.DISLIKE))).intValue());
 
             if (!excludeLikedBy) {
                 resource.setLikedBy(Sets.newLinkedHashSet(this.userConverter.convertAllBasic(this.sourceService.likedBy(entity))));

@@ -4,13 +4,16 @@ import com.google.common.collect.Sets;
 import com.priago.monocleapi.api.converters.media.MonocleMediaConverter;
 import com.priago.monocleapi.api.converters.user.UserConverter;
 import com.priago.monocleapi.api.resources.entities.media.impl.AuthorResource;
+import com.priago.monocleapi.core.enums.MonocleLikeCardinality;
 import com.priago.monocleapi.core.models.entities.media.impl.Author;
 import com.priago.monocleapi.core.services.entities.media.impl.AuthorService;
+import com.priago.monocleapi.core.services.nonentities.MonocleLikeCacheService;
 import com.priago.monocleapi.core.services.nonentities.MonocleUidService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -26,6 +29,9 @@ public class AuthorConverter implements MonocleMediaConverter<Author, AuthorReso
 
     @Resource(name = "authorService")
     private AuthorService authorService;
+
+    @Resource(name = "monocleLikeCacheService")
+    private MonocleLikeCacheService monocleLikeCacheService;
 
     @Resource(name = "monocleUidService")
     private MonocleUidService<Author, AuthorResource> monocleUidService;
@@ -108,8 +114,8 @@ public class AuthorConverter implements MonocleMediaConverter<Author, AuthorReso
      */
     private void fetchLikes(final AuthorResource resource, final Author entity, boolean excludeLikedBy) {
         if (entity != null) {
-            resource.setLikes(this.authorService.getLikes(entity));
-            resource.setDislikes(this.authorService.getDislikes(entity));
+            resource.setLikes(BigDecimal.valueOf(this.authorService.getLikes(entity)).add(BigDecimal.valueOf(this.monocleLikeCacheService.getCount(resource.getUid(), MonocleLikeCardinality.LIKE))).intValue());
+            resource.setDislikes(BigDecimal.valueOf(this.authorService.getDislikes(entity)).add(BigDecimal.valueOf(this.monocleLikeCacheService.getCount(resource.getUid(), MonocleLikeCardinality.DISLIKE))).intValue());
 
             if (!excludeLikedBy) {
                 resource.setLikedBy(Sets.newLinkedHashSet(this.userConverter.convertAllBasic(this.authorService.likedBy(entity))));
